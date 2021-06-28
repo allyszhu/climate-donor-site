@@ -13,12 +13,10 @@ const tailLayout = {
 const projectowner_organizationInfo = ({formData, organizationInfo, setOrganizationInfo, errorMessage, setErrorMessage, navigation}) => {
     const { previous } = navigation;
     const [formSubmitted, setFormSubmitted] = useState(false);
-    const [organizationName, setOrganizationName] = useState();
-    const [organizationWebsite, setOrganizationWebsite] = useState();
-    const [chapterType, setChapterType] = useState();
-    const [other, setOther] = useState();
-
-    const onFinish = () => { 
+    const [data, setData] = useState();
+    const onFinish = (fieldValues) => { 
+        setData(fieldValues)
+        console.log(data)
         setFormSubmitted(true);
     }; 
 
@@ -52,7 +50,7 @@ const projectowner_organizationInfo = ({formData, organizationInfo, setOrganizat
                 return;    
             }
 
-            signUp('project_owner', formData.email, formData.password, formData.fullName, formData.organizationInfo)
+            signUp('owner', formData.email, formData.password, '', '')
             .then((error) => {
                 if(error != null) { 
                     if(error.code === "auth/email-already-in-use") {
@@ -70,26 +68,12 @@ const projectowner_organizationInfo = ({formData, organizationInfo, setOrganizat
             })
             .catch((err) => {  
                 setErrorMessage("There was an error signing up.");     
-                console.log(error);
+                console.log(err);
                 previous();
             });
         }
           
-    }, [formData, formSubmitted]);
-
-    const onClick = (e) => {
-        // let organizationName = String(e.currentTarget.id)
-        
-        if(organizationName in organizationInfo) {
-            // setInterests(update(organizationInfo, {$unset: [interestName] }))
-            console.log("Already exist in the database")
-        } else {
-            // setInterests(update(interests, {[interestName] : {$set: true}}))
-            setOrganizationInfo(update(organizationInfo, {[organizationName]: {$set: true}}, {[organizationWebsite] : {$set: true}}, {[chapterType] : {$set: true}},  {[chapterType] : {$set: true}}, {[other]: {$set: true}} ));
-        }
-    }
-  
-
+    });
 
     const goBack =() => {
         // TODO: change back button to be arrow?
@@ -113,12 +97,12 @@ const projectowner_organizationInfo = ({formData, organizationInfo, setOrganizat
                     name="basic"
                     initialValues={{organizationInfo: organizationInfo}}
                     onFinish={onFinish}
-                    onFinishFailed={onFinishFailed}
+                    onFinishFailed = {onFinishFailed}
                 >
                     <Form.Item
                         label="Organization name"
                         name="organizationName"
-                        colon="true"
+                        extra = "E.g. Sierra Club, Nature Conservancy, Clean Energy Trust, etc."
                         rules={[
                             {
                                 required: true,
@@ -128,15 +112,13 @@ const projectowner_organizationInfo = ({formData, organizationInfo, setOrganizat
                     >
                         <Input
                             placeholder="Your response"
-                            onChange = {(e) => setOrganizationName(e.target.value)}
                         />
-                        <p>E.g. Sierra Club, Nature Conservancy, Clean Energy Trust, etc.</p>
                     </Form.Item>
 
                     <Form.Item
                         label="Organization website"
                         name="organizationWebsite"
-                        colon="true"
+                        extra="Please enter the URL for your organization website."
                         rules={[
                             {
                                 required: true,
@@ -146,15 +128,13 @@ const projectowner_organizationInfo = ({formData, organizationInfo, setOrganizat
                     >
                         <Input 
                             placeholder="Your response"
-                            onChange = {(e) => setOrganizationWebsite(e.target.value)}
                         />
-                        <p>Please enter the URL for your organization website.</p>
                     </Form.Item>
 
                     <Form.Item
                         label="Local or regional chapter"
                         name="chapterType"
-                        colon="true"
+                        extra= "If you are the local or regional chapter of a national or international organization, describe it here."
                         rules={[
                             {
                                 required: true,
@@ -165,13 +145,12 @@ const projectowner_organizationInfo = ({formData, organizationInfo, setOrganizat
                         <Input 
                             placeholder = "Your response"
                         />
-                        <p>If you are the local or regional chapter of a national or international organization, describe it here. </p>
                     </Form.Item>
 
                     <Form.Item
                         label="Primary contact name"
                         name={formData.name}
-                        colon="true"
+                        extra= "Name of the person to follow up with at your organization."
                         rules={[
                             {
                                 required: true,
@@ -179,34 +158,30 @@ const projectowner_organizationInfo = ({formData, organizationInfo, setOrganizat
                             },
                         ]}
                     >
-                        <Input 
-                            value= { formData.fullName}
-                            onChange = {(e) => setChapterType(e.target.value)}
+                        <Input
+                            value= { formData.fullName }
                         />
-                        <p>Name of the person to follow up with at your organization. </p>
                     </Form.Item>
 
                     <Form.Item
-                        label="Primary contact email address"
+                        label="Primary contact email"
                         name="email"
-                        colon="true"
                         rules={[
                             {
                                 required: true,
-                                message: 'Please input your email address',
+                                message: 'Please input your email',
                             },
                         ]}
                     >
-                        <Input 
-                            value = {formData.email}
-                            // This isn't working yet
+                        <Input
+                            value= { formData.email }
                         />
                     </Form.Item>
 
                     <Form.Item
                         label="Primary contact phone number"
                         name="phoneNumber"
-                        colon="true"
+                        
                         rules={[
                             {
                                 required: true,
@@ -222,7 +197,7 @@ const projectowner_organizationInfo = ({formData, organizationInfo, setOrganizat
                     <Form.Item
                         label="Type of organization"
                         name="organizationType"
-                        colon="true"
+                        
                         rules={[
                             {
                                 required: true,
@@ -238,22 +213,14 @@ const projectowner_organizationInfo = ({formData, organizationInfo, setOrganizat
                     <Form.Item
                         label="If 'other' please describe your organization"
                         name="otherInfo"
-                        colon="true"
-                        rules={[
-                            {
-                                required: true,
-                                message: 'Please input other organization info',
-                            },
-                        ]}
                     >
                         <Input 
                             placeholder = "Your response"
-                            onChange={(e) => setOther(e.target.value)}
                         />
                     </Form.Item>
                     
                     <Form.Item {...tailLayout}>
-                        <Button className="projectowner_btn" type="primary" htmlType="submit" onClick={onclick}>
+                        <Button className="projectowner_btn" type="primary" htmlType="submit">
                             Finish
                         </Button>
                     </Form.Item>

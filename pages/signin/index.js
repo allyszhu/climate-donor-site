@@ -3,6 +3,7 @@ import { Layout, Col, Row, Button, Form, Input, Checkbox } from 'antd';
 import { signIn } from '../../lib/firebase';
 import { withAuthUser, AuthAction } from 'next-firebase-auth'
 import { useState } from 'react';
+import { useRouter } from 'next/router'
 
 const { Content } = Layout;
 // const layout = {
@@ -22,6 +23,7 @@ const tailLayout = {
 
 const SignInPage = () => {
     const [errorMessage, setErrorMessage] = useState("");
+    const router = useRouter()
     const onFinish = (values) => {
 
         let missingValues = [];

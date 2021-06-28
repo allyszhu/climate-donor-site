@@ -1,13 +1,13 @@
 import React from 'react';
-import DBNavBar from '../../components/DBNavBar';
-import OwnerSidebar from '../../components/OwnerSidebar';
-import styles from '../../styles/OwnerDB.module.css';
+import DBNavBar from '../components/DBNavBar';
+import OwnerSidebar from '../components/OwnerSidebar';
+import styles from '../styles/OwnerDB.module.css';
 import { Layout, Row } from 'antd';
-import SearchBar from '../../components/SearchBar';
-import ProjectTabs from "../../components/ProjectTabs";
+import SearchBar from '../components/SearchBar';
+import ProjectTabs from "../components/ProjectTabs";
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import ProjectCard from '../../components/ProjectCard';
+import ProjectCard from '../components/ProjectCard';
 import Link from 'next/link'
 
 const { Content } = Layout;
@@ -26,6 +26,7 @@ const dummyProject = {
 }
 
 const OwnerDashboard = () => {
+    console.log("owner dashboard")
     return (
         <>
             <Layout>

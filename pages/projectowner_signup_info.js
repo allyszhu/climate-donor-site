@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import {Col, Row, Button, Form, Input} from 'antd';
 import { useRouter } from 'next/router';
 
@@ -14,8 +13,6 @@ const ProjectownerSignUpInfoPage = ({formData, setForm, errorMessage, setErrorMe
     const { fullName, email, password } = formData;
 
     const { next } = navigation;
-    const router = useRouter();
-
       
     const onFinish = (values) => {    
         let missingValues = [];    
