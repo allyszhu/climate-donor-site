@@ -103,6 +103,10 @@ const ProjectSubmission = () => {
                                 required
                                 rules={[
                                     {
+                                        required: true,
+                                        message: 'Enter your website url',
+                                    },
+                                    {
                                         type: "url",
                                         message: 'Enter a valid url',
                                     },
